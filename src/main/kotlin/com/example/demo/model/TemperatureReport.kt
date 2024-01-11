@@ -1,7 +1,6 @@
 package com.example.demo.model
-
 data class TemperatureReport(
     var name: String,
-    var description: String,
-    var done: Boolean
+    var temp_high_celsius: Double,
+    var forcast_blurp: String
 )
