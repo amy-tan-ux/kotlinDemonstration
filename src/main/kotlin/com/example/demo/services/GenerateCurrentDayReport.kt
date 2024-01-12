@@ -13,7 +13,6 @@ class GenerateCurrentDayReport {
 
     private val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssXXX")
     fun getCurrentDayTemperatureReport(): TemperatureReport {
-        // The temp_high_celsius_value will be the maximum of the 3 time periods in the day
         return TemperatureReport(arrayOf(calculateReportDetails(ForecastRepository().getForecast())))
     }
 
@@ -48,6 +47,7 @@ class GenerateCurrentDayReport {
         if (forecast == null || forecast.properties.periods == null) {
             return ReportDetails(day_name = null, temp_high_celsius = null, forecast_blurb = null)
         } else {
+            // The temp_high_celsius_value will be the maximum of the 3 time periods in the day
             var tempHighCelsiusValue= 0.0
             // The forecast_blurb will be a concatenation of the shortForecasts throughout the day
             var forecastBlurb = ""
