@@ -13,12 +13,7 @@ import org.springframework.web.bind.annotation.RestController
 class Controller {
     @GetMapping("/current-day-report")
     fun getCurrentDayTemperatureReport(): TemperatureReport? {
-        return GenerateCurrentDayReport().getCurrentDayTemperatureReport()
-    }
-
-    @GetMapping("/current-time-report")
-    fun getCurrentTimeTemperatureReport(): TemperatureReport? {
-        return GenerateCurrentDayReport().getCurrentTimeTemperatureReport()
+        return GenerateCurrentDayReport(ForecastRepository()).getCurrentDayTemperatureReport()
     }
 
     @GetMapping("/full-report")
