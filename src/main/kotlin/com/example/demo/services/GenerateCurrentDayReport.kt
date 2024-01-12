@@ -20,12 +20,12 @@ class GenerateCurrentDayReport {
     fun getCurrentTimeTemperatureReport(): TemperatureReport {
         val currentReportDetails: Periods? = ForecastRepository().getForecast()?.properties?.periods?.get(0)
         if (currentReportDetails != null) {
-            var day_name_value: String =
+            val dayNameValue: String =
                 LocalDateTime.parse(currentReportDetails.startTime, formatter).dayOfWeek.toString()
             return TemperatureReport(
                 arrayOf(
                     ReportDetails(
-                        day_name = day_name_value.get(0).uppercase() + day_name_value.substring(1).lowercase(),
+                        day_name = dayNameValue[0].uppercase() + dayNameValue.substring(1).lowercase(),
                         temp_high_celsius = currentReportDetails.temperature.toDouble(),
                         forecast_blurb = currentReportDetails.shortForecast
                     )
@@ -48,36 +48,36 @@ class GenerateCurrentDayReport {
         if (forecast == null || forecast.properties.periods == null) {
             return ReportDetails(day_name = null, temp_high_celsius = null, forecast_blurb = null)
         } else {
-            var temp_high_celsius_value: Double = 0.0
-            // The forecast_blup will be a concatenation of the shortForecasts throughout the day
-            var forecast_blurp: String = ""
-            var day_name_value: String =
+            var tempHighCelsiusValue= 0.0
+            // The forecast_blurb will be a concatenation of the shortForecasts throughout the day
+            var forecastBlurb = ""
+            val dayNameValue: String =
                 LocalDateTime.parse(forecast.properties.updateTime, formatter).dayOfWeek.toString()
 
             for (period in forecast.properties.periods!!) {
-                if (LocalDateTime.parse(period.startTime, formatter).dayOfWeek.toString() == day_name_value &&
+                if (LocalDateTime.parse(period.startTime, formatter).dayOfWeek.toString() == dayNameValue &&
                     LocalDateTime.parse(period.startTime, formatter).hour > 5
                 ) {
 
-                    var reportedTemperatureInCelsius: Double =
+                    val reportedTemperatureInCelsius: Double =
                         if (period.temperatureUnit == "F")
                             (5 * (period.temperature.toDouble() - 32)) / 9 // F to Celsius
                         else period.temperature.toDouble()
 
-                    if (reportedTemperatureInCelsius > temp_high_celsius_value) {
+                    if (reportedTemperatureInCelsius > tempHighCelsiusValue) {
 
-                        temp_high_celsius_value = reportedTemperatureInCelsius
+                        tempHighCelsiusValue = reportedTemperatureInCelsius
                     }
-                    forecast_blurp += " " + period.shortForecast + "."
-                } else if (forecast_blurp != "") {
+                    forecastBlurb += " " + period.shortForecast + "."
+                } else if (forecastBlurb != "") {
                     break
                 }
             }
 
             return ReportDetails(
-                day_name = day_name_value.get(0).uppercase() + day_name_value.substring(1).lowercase(),
-                temp_high_celsius = DecimalFormat("#,##0.0").format(temp_high_celsius_value).toDouble(),
-                forecast_blurb = forecast_blurp
+                day_name = dayNameValue[0].uppercase() + dayNameValue.substring(1).lowercase(),
+                temp_high_celsius = DecimalFormat("#,##0.0").format(tempHighCelsiusValue).toDouble(),
+                forecast_blurb = forecastBlurb
             )
         }
     }
