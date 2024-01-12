@@ -1,14 +1,15 @@
 package com.example.demo.model.forecast
 
 import com.example.demo.model.UnitCodeValue
-import java.time.format.DateTimeFormatter
+import com.fasterxml.jackson.annotation.JsonProperty
+
 data class Properties(
-    var updated: DateTimeFormatter,
-    var units: String,
-    var forecastGenerator: String,
-    var generatedAt: DateTimeFormatter,
-    var updateTime: DateTimeFormatter,
-    var validTimes: DateTimeFormatter,
-    var elevation: UnitCodeValue,
-    var periods: List<Periods>
+    @JsonProperty("updated") var updated: String,
+    @JsonProperty("units") var units: String,
+    @JsonProperty("forecastGenerator") var forecastGenerator: String,
+    @JsonProperty("generatedAt") var generatedAt: String,
+    @JsonProperty("updateTime") var updateTime: String,
+    @JsonProperty("validTimes") var validTimes: String,
+    @JsonProperty("elevation") var elevation: UnitCodeValue,
+    @JsonProperty("periods") var periods: Array<Periods>?
 )

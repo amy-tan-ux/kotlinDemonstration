@@ -1,5 +1,8 @@
 package com.example.demo.model
+
+import com.fasterxml.jackson.annotation.JsonProperty
+
 data class UnitCodeValue(
-    var unitCode: String,
-    var value: Long,
+    @JsonProperty("unitCode") var unitCode: String?,
+    @JsonProperty("value") var value: String?
 )

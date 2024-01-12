@@ -1,6 +1,9 @@
 package com.example.demo.model.forecast
+
+import com.fasterxml.jackson.annotation.JsonProperty
+
 data class Geometry(
-    var type: String,
-    var coordinates: List<Pair<Long,Long>>
+    @JsonProperty("type") var type: String?,
+    @JsonProperty("coordinates") var coordinates: Array<Array<Array<String>>>
 
 )
