@@ -4,6 +4,7 @@ import com.example.demo.data.IForecastRepository
 import com.example.demo.model.Forecast
 import com.example.demo.model.ReportDetails
 import com.example.demo.model.TemperatureReport
+import org.slf4j.LoggerFactory
 import java.text.DecimalFormat
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -13,6 +14,7 @@ class GenerateCurrentDayReport(
 ) {
 
     private val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssXXX")
+    private val logger = LoggerFactory.getLogger(this::class.java)
 
     fun getCurrentDayTemperatureReport(): TemperatureReport {
         return TemperatureReport(arrayOf(calculateReportDetails(forecastRepository.getForecast())))
@@ -21,6 +23,7 @@ class GenerateCurrentDayReport(
     private fun calculateReportDetails(forecast: Forecast?): ReportDetails {
 
         if (forecast == null || forecast.properties.periods == null) {
+            logger.warn("Daily Report Failed to Generate. Forecast Records Missing Fields to Create a Daily Report ")
             return ReportDetails(day_name = null, temp_high_celsius = null, forecast_blurb = null)
         } else {
             // The temp_high_celsius_value will be the maximum of the 3 time periods in the day
@@ -28,7 +31,7 @@ class GenerateCurrentDayReport(
             // The forecast_blurb will be a concatenation of the shortForecasts throughout the day
             var forecastBlurb = ""
             val dayNameValue: String =
-                LocalDateTime.parse(forecast.properties.updateTime, formatter).dayOfWeek.toString()
+                LocalDateTime.now().dayOfWeek.toString()
 
             for (period in forecast.properties.periods!!) {
                 if (LocalDateTime.parse(
