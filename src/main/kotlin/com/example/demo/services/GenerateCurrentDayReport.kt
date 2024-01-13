@@ -31,7 +31,7 @@ class GenerateCurrentDayReport(
             // The forecast_blurb will be a concatenation of the shortForecasts throughout the day
             var forecastBlurb = ""
             val dayNameValue: String =
-                LocalDateTime.parse(forecast.properties.updateTime, formatter).dayOfWeek.toString()
+                LocalDateTime.now().dayOfWeek.toString()
 
             for (period in forecast.properties.periods!!) {
                 if (LocalDateTime.parse(
